@@ -12,7 +12,10 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEntityFrameworkNpgsql().AddDbContext<StudentDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Connection"), b => b.MigrationsAssembly("StudentProject.API")));
+//builder.Services.AddEntityFrameworkNpgsql().AddDbContext<StudentDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Connection"), b => b.MigrationsAssembly("StudentProject.API")));
+builder.Services.AddDbContext<StudentDbContext>(options =>
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 builder.Host.UseSerilog((context, configuration) =>
    configuration.ReadFrom.Configuration(context.Configuration));
