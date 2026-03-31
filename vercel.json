@@ -1,14 +1,10 @@
 {
-	"builds": [
-		{
-			"src": "StudentProject.API/StudentProject.API.csproj",
-			"use": "@vercel/dotnet"
-		}
-	],
+	"buildCommand": "dotnet publish StudentProject.API/StudentProject.API.csproj -c Release -o publish",
+	"outputDirectory": "publish",
 	"routes": [
 		{
 			"src": "/(.*)",
-			"dest": "StudentProject.API"
+			"dest": "publish/$1"
 		}
 	]
 }
