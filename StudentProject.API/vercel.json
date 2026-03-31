@@ -1,0 +1,14 @@
+﻿{
+  "builds": [
+    {
+      "src": "StudentProject.API/StudentProject.API.csproj",
+      "use": "@vercel/dotnet"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "StudentProject.API"
+    }
+  ]
+}
