@@ -1,14 +1,8 @@
 {
-	"builds": [
-		{
-			"src": "StudentProject.API/StudentProject.API.csproj",
-			"use": "@vercel/dotnet"
+	{
+		"functions": {
+			"api/index.cs": {
+				"runtime": "dotnet8"
+			}
 		}
-	],
-	"routes": [
-		{
-			"src": "/(.*)",
-			"dest": "StudentProject.API"
-		}
-	]
-}
+	}
