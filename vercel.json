@@ -1,4 +1,5 @@
 {
-	"buildCommand": "dotnet publish StudentProject.API/StudentProject.API.csproj -c Release -o publish",
+	"installCommand": "",
+	"buildCommand": "dotnet publish ./StudentProject.API/StudentProject.API.csproj -c Release -o publish",
 	"outputDirectory": "publish"
 }

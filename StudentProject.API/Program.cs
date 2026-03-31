@@ -117,12 +117,12 @@ var app = builder.Build();
 
 
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//// Configure the HTTP request pipeline.
+//if (app.Environment.IsDevelopment())
+//{
+//    app.UseSwagger();
+//    app.UseSwaggerUI();
+//}
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -131,7 +131,7 @@ app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
 
 app.UseAuthorization();
-
+app.MapGet("/", () => "Student API Running Successfully");
 app.MapControllers();
 
 app.Run();
