@@ -1,5 +1,14 @@
 {
-	"installCommand": "",
-	"buildCommand": "dotnet publish ./StudentProject.API/StudentProject.API.csproj -c Release -o publish",
-	"outputDirectory": "publish"
+	"builds": [
+		{
+			"src": "StudentProject.API/StudentProject.API.csproj",
+			"use": "@vercel/dotnet"
+		}
+	],
+	"routes": [
+		{
+			"src": "/(.*)",
+			"dest": "StudentProject.API"
+		}
+	]
 }
