@@ -1,8 +1,4 @@
 {
-	{
-		"functions": {
-			"api/index.cs": {
-				"runtime": "dotnet8"
-			}
-		}
-	}
+	"buildCommand": "dotnet publish StudentProject.API/StudentProject.API.csproj -c Release -o publish",
+	"outputDirectory": "publish"
+}
