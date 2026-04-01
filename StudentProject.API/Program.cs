@@ -15,7 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddEntityFrameworkNpgsql().AddDbContext<StudentDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Connection"), b => b.MigrationsAssembly("StudentProject.API")));
 builder.Services.AddDbContext<StudentDbContext>(options =>
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection")));
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("StudentProject.API")));
 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 builder.Host.UseSerilog((context, configuration) =>
    configuration.ReadFrom.Configuration(context.Configuration));
@@ -114,7 +115,9 @@ builder.Services.AddCors(options =>
                    .AllowAnyMethod();
         });
 });
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
 
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 var app = builder.Build();
 
 
