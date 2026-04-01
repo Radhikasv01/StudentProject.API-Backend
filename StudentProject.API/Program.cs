@@ -97,7 +97,9 @@ builder.Services.AddSwaggerGen(options =>
             });
 });
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
 
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -115,9 +117,7 @@ builder.Services.AddCors(options =>
                    .AllowAnyMethod();
         });
 });
-var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
 
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 var app = builder.Build();
 
 
