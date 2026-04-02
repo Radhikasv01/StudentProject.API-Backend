@@ -42,7 +42,7 @@ Log.Logger = new LoggerConfiguration().MinimumLevel.Error().WriteTo.File("MyLog/
 
 
 
-var constring = builder.Configuration.GetConnectionString("Connection");
+var constring = builder.Configuration.GetConnectionString("DefaultConnection");
 Settings.ConnectionString = constring;
 builder.Services.AddAuthentication(options =>
 {
@@ -104,7 +104,7 @@ builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
 
 // Add CORS services
 builder.Services.AddCors(options =>
@@ -122,22 +122,41 @@ var app = builder.Build();
 
 
 
-
-//// Configure the HTTP request pipeline.
+/// Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
 //    app.UseSwagger();
 //    app.UseSwaggerUI();
 //}
 
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        var exceptionHandler =
+            context.Features.Get<
+            Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
+
+        var error = exceptionHandler?.Error?.ToString();
+
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "text/plain";
+
+        await context.Response.WriteAsync(error);
+    });
+});
+
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseDeveloperExceptionPage();
 
 app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
 
+app.UseAuthentication();   // ADD THIS
 app.UseAuthorization();
+
 app.MapGet("/", () => "Student API Running Successfully");
-app.MapControllers();
 
 app.Run();
