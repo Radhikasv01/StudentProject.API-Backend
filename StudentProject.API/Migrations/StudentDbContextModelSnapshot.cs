@@ -40,7 +40,7 @@ namespace StudentProject.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LoginModels", (string)null);
+                    b.ToTable("LoginModels");
                 });
 
             modelBuilder.Entity("Student.Model.RegisterModel", b =>
@@ -85,7 +85,7 @@ namespace StudentProject.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RegisterModels", (string)null);
+                    b.ToTable("RegisterModels");
                 });
 
             modelBuilder.Entity("Student.Model.RoleModel", b =>
@@ -109,7 +109,7 @@ namespace StudentProject.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Student.Model.SportsModel", b =>
@@ -137,7 +137,7 @@ namespace StudentProject.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Sports", (string)null);
+                    b.ToTable("Sports");
                 });
 
             modelBuilder.Entity("Student.Model.StudentBooksModel", b =>
@@ -160,7 +160,7 @@ namespace StudentProject.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BooksModels", (string)null);
+                    b.ToTable("BooksModels");
                 });
 
             modelBuilder.Entity("Student.Model.StudentCourse", b =>
@@ -190,7 +190,7 @@ namespace StudentProject.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Coarses", (string)null);
+                    b.ToTable("Coarses");
                 });
 
             modelBuilder.Entity("Student.Model.StudentModel", b =>
@@ -231,7 +231,7 @@ namespace StudentProject.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Students", (string)null);
+                    b.ToTable("Students");
                 });
 #pragma warning restore 612, 618
         }

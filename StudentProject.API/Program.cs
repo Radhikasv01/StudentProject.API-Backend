@@ -151,11 +151,14 @@ app.UseSwaggerUI();
 
 app.UseDeveloperExceptionPage();
 
-app.UseHttpsRedirection();
 app.UseCors("AllowAllOrigins");
+
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();   // ADD THIS
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.MapGet("/", () => "Student API Running Successfully");
 
