@@ -12,6 +12,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+AppContext.SetSwitch("System.Net.DisableIPv6", true);
+
 //builder.Services.AddEntityFrameworkNpgsql().AddDbContext<StudentDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Connection"), b => b.MigrationsAssembly("StudentProject.API")));
 builder.Services.AddDbContext<StudentDbContext>(options =>
     options.UseNpgsql(
@@ -117,6 +119,8 @@ builder.Services.AddCors(options =>
                    .AllowAnyMethod();
         });
 });
+
+builder.WebHost.UseUrls("http://0.0.0.0:10000");
 
 var app = builder.Build();
 
