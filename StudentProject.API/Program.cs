@@ -124,7 +124,7 @@ builder.WebHost.UseUrls("http://0.0.0.0:10000");
 
 var app = builder.Build();
 
-
+AppContext.SetSwitch("System.Net.DisableIPv6", true);
 
 app.UseExceptionHandler(errorApp =>
 {
