@@ -12,7 +12,13 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddEntityFrameworkNpgsql().AddDbContext<StudentDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Connection"), b => b.MigrationsAssembly("StudentProject.API")));
+AppContext.SetSwitch("System.Net.DisableIPv6", true);
+
+//builder.Services.AddEntityFrameworkNpgsql().AddDbContext<StudentDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Connection"), b => b.MigrationsAssembly("StudentProject.API")));
+builder.Services.AddDbContext<StudentDbContext>(options =>
+    options.UseNpgsql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("StudentProject.API")));
 ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 builder.Host.UseSerilog((context, configuration) =>
    configuration.ReadFrom.Configuration(context.Configuration));
@@ -38,7 +44,7 @@ Log.Logger = new LoggerConfiguration().MinimumLevel.Error().WriteTo.File("MyLog/
 
 
 
-var constring = builder.Configuration.GetConnectionString("Connection");
+var constring = builder.Configuration.GetConnectionString("DefaultConnection");
 Settings.ConnectionString = constring;
 builder.Services.AddAuthentication(options =>
 {
@@ -93,12 +99,14 @@ builder.Services.AddSwaggerGen(options =>
             });
 });
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "10000";
 
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
 
 // Add CORS services
 builder.Services.AddCors(options =>
@@ -112,26 +120,43 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.WebHost.UseUrls("http://0.0.0.0:10000");
+
 var app = builder.Build();
 
+AppContext.SetSwitch("System.Net.DisableIPv6", true);
 
-
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseExceptionHandler(errorApp =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    errorApp.Run(async context =>
+    {
+        var exceptionHandler =
+            context.Features.Get<
+            Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
+
+        var error = exceptionHandler?.Error?.ToString();
+
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "text/plain";
+
+        await context.Response.WriteAsync(error);
+    });
+});
 
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+app.UseDeveloperExceptionPage();
+
 app.UseCors("AllowAllOrigins");
 
+//app.UseHttpsRedirection();
+
+app.UseAuthentication();   // ADD THIS
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapGet("/", () => "Student API Running Successfully");
 
 app.Run();
